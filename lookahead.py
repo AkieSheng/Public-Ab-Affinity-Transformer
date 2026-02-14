@@ -14,22 +14,16 @@ import warnings
 
 class Lookahead(Optimizer):
     def __init__(self, optimizer, k=5, alpha=0.5):
-        # 初始化外部优化器
         self.optimizer = optimizer
         self.k = k
         self.alpha = alpha
         self.param_groups = self.optimizer.param_groups
         self.state = defaultdict(dict)
         self.fast_state = self.optimizer.state
+        self.defaults = self.optimizer.defaults.copy()
+        self._optimizer_step_pre_hooks = {}
+        self._optimizer_step_post_hooks = {}
 
-        # 初始化defaults属性，包含外部优化器的默认参数
-        self.defaults = self.optimizer.defaults.copy()  # 继承外部优化器的默认设置
-        
-        # 初始化_optimizer_step_pre_hooks和_optimizer_step_post_hooks
-        self._optimizer_step_pre_hooks = {}  # 初始化前置钩子
-        self._optimizer_step_post_hooks = {}  # 初始化后置钩子
-        
-        # 为每个param_group增加"counter"属性
         for group in self.param_groups:
             group["counter"] = 0
 
