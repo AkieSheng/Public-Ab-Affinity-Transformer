@@ -16,18 +16,12 @@ import timeit
 import matplotlib.pyplot as plt
 from pytorchtools import EarlyStopping
 #from data import diction,dataset
-import sys   #导入sys模块
+import sys
 sys.path.append("../")
 from data.load import split
 
-
-
-
-
 def load_tensor(file_name, dtype):
     return [dtype(d).to(device) for d in np.load(file_name + '.npy', allow_pickle=True)]
-
-
 
 if __name__ == "__main__":
     SEED = 1234
